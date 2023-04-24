@@ -1,0 +1,48 @@
+#####
+Below is the base code for plotting Mean score vs training time for all environments and algorithms
+This code reads data from a CSV file named "ALL DATA.csv" using pandas library and creates a scatter
+plot of "Training time" vs. "Mean score" for all different environments. Simply change the "Environment" to one of the 9
+environments mentioned in the "ALL DATA.csv" to view data for different gym environments
+
+########
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+df = pd.read_csv("ALL DATA.csv")
+
+
+acrobot_data = df[df["Environment"] == "Bipedal Walker"]
+
+without_training_value = -101.25
+
+#########
+The "without_training_value" is hardcoded for each different environment, it shows the value of the mean score that the environment received when
+ran with zero training, simply from random movement.
+For the Acrobot, this value is  -500
+For the Pendulum, this value is -1122.21
+For the Cart Pole, this value is 25.6
+For the Lunar Lander, this value is -203.43
+For the Mountain car (Discrete), this value is -200
+For the Mountain car (Continuous), this value is -33.48
+For the Car Racing, this value is -30.09
+For the Bipedal walker hardcore, this value is -98.58
+
+For the Mujoco 3D Inverted Double Pendulum, this value is 54.89
+
+#########
+
+
+for algorithm_name in acrobot_data["Algorithm Name"].unique():
+    algorithm_data = acrobot_data[acrobot_data["Algorithm Name"] == algorithm_name]
+    plt.scatter(algorithm_data["Training time"], algorithm_data["Mean Score"], label=algorithm_name, s=10)
+    plt.plot(algorithm_data["Training time"], algorithm_data["Mean Score"])
+
+plt.axhline(y=without_training_value, color='red', linestyle='--', label="Without Training")
+
+plt.xlabel("Training time (s)")
+plt.ylabel("Mean score")
+plt.title("Bipedal Walker: Training time vs. Mean scores")
+plt.legend()
+#plt.savefig("bipedal_walker_training_time_vs_mean_score.png")
+plt.show()
