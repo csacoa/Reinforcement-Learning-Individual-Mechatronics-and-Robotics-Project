@@ -1,0 +1,36 @@
+#########
+The Code below separates the scatter plots so they only show the experiment data for one algorithm and one environment for a more detailed
+specific look at our final chosen algorithm
+##############
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("ALL DATA.csv")
+
+acrobot_data = df[df["Environment"] == "Acrobot"]
+
+without_training_value = -500
+
+algorithm_name = "PPO"  # Filters the algorithm to PPO algorithm only
+
+algorithm_data = acrobot_data[acrobot_data["Algorithm Name"] == algorithm_name]
+plt.scatter(algorithm_data["Training time"], algorithm_data["Mean Score"], label=algorithm_name, s=10)
+plt.plot(algorithm_data["Training time"], algorithm_data["Mean Score"])
+
+plt.axhline(y=without_training_value, color='red', linestyle='--', label="Without Training")
+
+plt.xlabel("Training time (s)")
+plt.ylabel("Mean score")
+plt.title("Acrobot: Training time vs. Mean scores (PPO only)")
+plt.legend()
+
+
+#plt.savefig("acrobot_training_time_vs_mean_score.png")
+
+#####
+This "savefig" code can be commented in and out of the functional code and the file name can be changed to meet the required parameters
+######
+
+plt.show()
