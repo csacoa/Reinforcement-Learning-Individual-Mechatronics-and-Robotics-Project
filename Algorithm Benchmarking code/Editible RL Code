@@ -17,6 +17,31 @@ algorithm_name = "PPO"
 
 environment_name = 'InvertedDoublePendulum-v2'
 
+########################
+####### To experiment on the Hardcore Bipedal Walker code we should use this code below
+from gym.envs.box2d import BipedalWalker
+
+class BipedalWalkerHardcore(BipedalWalker):
+    hardcore = True
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+# Register the environment with Gym
+environment_name = 'BipedalWalkerHardcore-v3'
+gym.register(
+    id=environment_name,
+    entry_point='__main__:BipedalWalkerHardcore',
+    max_episode_steps=1600,
+    reward_threshold=300,
+)
+
+##########################
+
+
+
+
+
 #######
 Below are a list of environment names commented out so they can be easily copied and pasted into the "environment_name" variable
 and to make sure the versions of the environments used for these experiments stays consistant.
