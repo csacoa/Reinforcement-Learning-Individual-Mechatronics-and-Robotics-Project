@@ -2,7 +2,9 @@
 Below is the base code for plotting Mean score vs training time for all environments and algorithms
 This code reads data from a CSV file named "ALL DATA.csv" using pandas library and creates a scatter
 plot of "Training time" vs. "Mean score" for all different environments. Simply change the "Environment" to one of the 9
-environments mentioned in the "ALL DATA.csv" to view data for different gym environments
+environments mentioned in the "ALL DATA.csv" to view data for different gym environments.
+
+To run this code you should ideally have the "ALL DATA.csv" file saved in the same location as this program
 
 ########
 import pandas as pd
