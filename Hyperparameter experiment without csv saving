@@ -1,0 +1,84 @@
+import os
+import gym
+from stable_baselines3 import PPO, TD3, DDPG, A2C , DQN, SAC
+from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3.common.evaluation import evaluate_policy
+import numpy as np
+import time
+
+
+algorithm_name = "PPO"
+environment_name = 'CartPole-v1'
+env = gym.make(environment_name)
+log_path = os.path.join('Training', 'Logs')
+
+
+number_of_loops = 1
+for i in range(number_of_loops):
+    # MODIFY HYPERPARAMETERS HERE
+    policy = 'MlpPolicy'
+    learning_rate = 0.00025
+    n_steps = 2048
+    batch_size = 64
+    n_epochs = 10
+    gamma = 0.99
+    gae_lambda = 0.95
+    clip_range = 0.2
+    ent_coef = 0.0
+
+
+    model = PPO(policy, env, verbose=1, tensorboard_log=log_path,
+                learning_rate=learning_rate, n_steps=n_steps, batch_size=batch_size,
+                n_epochs=n_epochs, gamma=gamma, gae_lambda=gae_lambda, clip_range=clip_range,
+                ent_coef=ent_coef)
+
+    env = gym.make(environment_name)
+    env = DummyVecEnv([lambda: env])
+
+    start_time = time.time()
+    number_of_episodes = 100000
+
+    model.learn(total_timesteps=number_of_episodes)
+
+    end_time = time.time()
+    elapsed_time_ms = (end_time - start_time) * 1000
+    elapsed_time_sec = elapsed_time_ms / 1000
+    print(algorithm_name)
+    print(environment_name)
+    print("Training time: {:.3f} sec".format(elapsed_time_sec))
+
+    model_name = f"{algorithm_name}_{environment_name}_{number_of_episodes}"
+    Algorithm_Path = os.path.join('Training', 'Saved Models', model_name)
+    model.save(Algorithm_Path)
+
+    episodes = 20
+    scores = []
+    for episode in range(1, episodes+1):
+        obs = env.reset()
+        done = False
+        score = 0
+    
+        while not done:
+        
+            #env.render()
+            action, _ = model.predict(obs) # WE ARE NOW USING OUR MODEL
+            obs, reward, done, info = env.step(action)
+            score += reward
+    
+        print('Episode:{} Score:{}'.format(episode, score))
+        scores.append(score)
+    
+    env.close()
+
+
+    mean_score = sum(scores) / len(scores)
+    std_dev = (sum((score - mean_score)**2 for score in scores) / len(scores))**0.5
+    print(algorithm_name)
+    print(environment_name)
+    print(f"Mean Score: {mean_score}")
+    print(f"Standard Deviation: {std_dev}")
+
+
+    del model
+
+
