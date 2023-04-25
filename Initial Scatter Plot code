@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 df = pd.read_csv("ALL DATA.csv")
 
 
-acrobot_data = df[df["Environment"] == "Bipedal Walker"]
+initial_scatter_data = df[df["Environment"] == "Bipedal Walker"]
 
 without_training_value = -101.25
 
@@ -33,8 +33,8 @@ For the Mujoco 3D Inverted Double Pendulum, this value is 54.89
 #########
 
 
-for algorithm_name in acrobot_data["Algorithm Name"].unique():
-    algorithm_data = acrobot_data[acrobot_data["Algorithm Name"] == algorithm_name]
+for algorithm_name in initial_scatter_data["Algorithm Name"].unique():
+    algorithm_data = initial_scatter_data[initial_scatter_data["Algorithm Name"] == algorithm_name]
     plt.scatter(algorithm_data["Training time"], algorithm_data["Mean Score"], label=algorithm_name, s=10)
     plt.plot(algorithm_data["Training time"], algorithm_data["Mean Score"])
 
@@ -45,4 +45,9 @@ plt.ylabel("Mean score")
 plt.title("Bipedal Walker: Training time vs. Mean scores")
 plt.legend()
 #plt.savefig("bipedal_walker_training_time_vs_mean_score.png")
+
+#####
+This "savefig" code can be commented in and out of the functional code and the file name can be changed to meet the required parameters
+######
+
 plt.show()
