@@ -1,0 +1,188 @@
+#############################
+This code was written for the purpose of creating a dataset of 6 different algorithms effects on different environments in the OpenAI gym documentation
+It is written in a way where the code can be easily interchanged to run experiments on each environment, quickly changing the algorithm used and the amount
+of episodes of training for each environment. Logging for this information has been done manually by copying the results of each experiment into a 
+separate spreadsheet.
+
+###############################
+
+import os
+import gym
+from stable_baselines3 import PPO, TD3, DDPG, A2C , DQN, SAC
+from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3.common.evaluation import evaluate_policy
+import numpy as np
+import time
+algorithm_name = "PPO"
+
+environment_name = 'InvertedDoublePendulum-v2'
+
+#######
+Below are a list of environment names commented out so they can be easily copied and pasted into the "environment_name" variable
+and to make sure the versions of the environments used for these experiments stays consistant.
+#######
+
+#environment_name = 'Humanoid-v2'
+#environment_names = ['CartPole-v1', 'Acrobot-v1',
+#'MountainCar-v0', 'MountainCarContinuous-v0', 'LunarLander-v2', 
+#'BipedalWalker-v3', 'CarRacing-v0', Pendulum-v1]
+#"BipedalWalker-v3", hardcore=True to make bipedal hardcore environment
+#Mujoco environment is InvertedDoublePendulum-v2
+env = gym.make(environment_name)
+
+
+######################################
+The code below is to test what the environment will get for its mean score and standard deviation when untrained
+simply using random movements. This is to record for comparisons sake to the versions that have been trained to a certain standard.
+
+The "env.render()" can be commented in and out of the code, this changes whether the environment is rendered on screen or not, this is good for visualisation
+of the environments ability to perform its task but it also dramatically slows down performance. Accurate scores and STD are still displayed with and without
+the environment being rendered.
+########################################
+
+episodes = 500
+scores = []
+
+for episode in range(1, episodes+1):
+    state = env.reset()
+    done = False
+    score = 0
+    
+    while not done:
+        #env.render()
+        action = env.action_space.sample()
+        n_state, reward, done, info = env.step(action)
+        score += reward
+    
+    scores.append(score)
+    print('Episode:{} Score:{}'.format(episode, score))
+
+env.close()
+
+# Calculate mean average score and standard deviation
+mean_score = np.mean(scores)
+std_score = np.std(scores)
+
+# Print mean average score and standard deviation
+print('Mean Average Score: {:.2f}'.format(mean_score))
+print('Standard Deviation: {:.2f}'.format(std_score))
+
+
+#############
+The below code defines the tensorboard log paths for whatever algorithm you choose to use. This is helpful for viewing progress with Tensorboard
+
+############
+
+
+
+
+log_path = os.path.join('Training', 'Logs')
+
+if algorithm_name == 'PPO':
+    model = PPO('MlpPolicy', env, verbose=1, tensorboard_log=log_path)
+elif algorithm_name == 'TD3':
+    model = TD3('MlpPolicy', env, verbose=1, tensorboard_log=log_path)
+elif algorithm_name == 'DDPG':
+    model = DDPG('MlpPolicy', env, verbose=1, tensorboard_log=log_path)
+elif algorithm_name == 'A2C':
+    model = A2C('MlpPolicy', env, verbose=1, tensorboard_log=log_path)
+elif algorithm_name == 'DQN':
+    model = DQN('MlpPolicy', env, verbose=1, tensorboard_log=log_path)
+elif algorithm_name == 'SAC':
+    model = SAC('MlpPolicy', env, verbose=1, tensorboard_log=log_path)
+else:
+    raise ValueError(f"Invalid algorithm name: {algorithm_name}")
+
+env = gym.make(environment_name)
+env = DummyVecEnv([lambda: env])
+
+
+##########################
+The next block of code is what starts to train the AI, you can define the amounf of episodes you want to train the neural network for here.
+
+###########################
+
+start_time = time.time()
+number_of_episodes = 50000
+
+
+model.learn(total_timesteps=number_of_episodes)
+
+end_time = time.time()
+elapsed_time_ms = (end_time - start_time) * 1000
+elapsed_time_sec = elapsed_time_ms / 1000
+
+print("Training time: {:.3f} sec".format(elapsed_time_sec))
+
+
+################
+This next block of code should be ran if you want to use the neural network you just trained on the next observation experiment
+comment it out if not
+################
+
+
+model_name = f"{algorithm_name}_{environment_name}_{number_of_episodes}"
+Algorithm_Path = os.path.join('Training', 'Saved Models', model_name)
+model.save(Algorithm_Path)
+
+################
+This next block of code should be ran if you want to use a pre trained neural network in your files on the next observation experiment
+comment it out if not
+################
+
+
+model_path = os.path.join('Training', 'Saved Models','hyperparam testing', 'PPO_InvertedDoublePendulum-v2_10000000 0.0001')
+model = PPO.load(model_path)
+
+
+##########################
+
+This next code will benchmark your neural network, running for as many episodes as you want, outputting the
+mean score and standard deviation achieved from this
+
+The "env.render()" can be commented in and out of the code, this changes whether the environment is rendered on screen or not, this is good for visualisation
+of the environments ability to perform its task but it also dramatically slows down performance. Accurate scores and STD are still displayed with and without
+the environment being rendered.
+##########################
+
+episodes = 500
+scores = []
+for episode in range(1, episodes+1):
+    obs = env.reset()
+    done = False
+    score = 0
+    
+    while not done:
+        
+        env.render()
+        action, _ = model.predict(obs) # WE ARE NOW USING OUR MODEL
+        obs, reward, done, info = env.step(action)
+        score += reward
+    
+    print('Episode:{} Score:{}'.format(episode, score))
+    scores.append(score)
+    
+env.close()
+
+
+mean_score = sum(scores) / len(scores)
+std_dev = (sum((score - mean_score)**2 for score in scores) / len(scores))**0.5
+
+print(f"Mean Score: {mean_score}")
+print(f"Standard Deviation: {std_dev}")
+
+
+
+
+########################
+This next line of code will delete the neural network you have trained. You can use this if you don't need it anymore and have already recorded the benchmarking
+information somewhere.
+#######################
+
+#del model
+
+
+
+
+
+
