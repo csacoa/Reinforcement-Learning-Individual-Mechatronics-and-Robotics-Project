@@ -53,3 +53,73 @@ This "savefig" code can be commented in and out of the functional code and the f
 ######
 
 plt.show()
+
+
+
+####################
+The below code is to compare the time taken to train for each value I have recorded for the amount of episodes trained for. This is to simply prove
+that it takes longer to train more episodes. The "Environment" variable can be changed to see data for each environment
+##################
+
+Environment = "Bipedal Walker"
+
+df = pd.read_csv("ALL DATA.csv")
+acrobot_data = df[df["Environment"] == Environment]
+for algorithm_name in acrobot_data["Algorithm Name"].unique():
+    algorithm_data = acrobot_data[acrobot_data["Algorithm Name"] == algorithm_name]
+    plt.scatter(algorithm_data["Training time"], algorithm_data["Episodes of training"], label=algorithm_name, s=10)
+    plt.plot(algorithm_data["Training time"], algorithm_data["Episodes of training"])
+
+plt.xlabel("Training time (s)")
+plt.ylabel("Episodes of training")
+plt.title(Environment + ": Training time vs Episodes of training")
+plt.legend()
+plt.ylim(0, 1000000)
+
+
+plt.show()
+
+
+
+#this block of code does the same thing but limits to 100,000 for better visibility
+df = pd.read_csv("ALL DATA.csv")
+bipedal_walker_data = df[df["Environment"] == Environment]
+for algorithm_name in bipedal_walker_data["Algorithm Name"].unique():
+    algorithm_data = bipedal_walker_data[bipedal_walker_data["Algorithm Name"] == algorithm_name]
+    plt.scatter(algorithm_data["Training time"], algorithm_data["Episodes of training"], label=algorithm_name, s=10)
+    plt.plot(algorithm_data["Training time"], algorithm_data["Episodes of training"])
+plt.xlabel("Training time (s)")
+plt.ylabel("Episodes of training")
+plt.title(Environment + ": Training time vs Episodes of training")
+plt.legend()
+plt.ylim(0, 100000)
+
+#plt.savefig("bipedal_walker_training_time_vs_Episodes of training_1hundthou.png")
+
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
