@@ -1,0 +1,18 @@
+0.01,512,128,0.999,0.95,0.2,0.01,1e-05,192.1,0.9280900955200195,82.11631993702592
+0.01,512,64,0.95,0.95,0.2,0.001,1e-06,162.4,1.4016952514648438,84.66664041994343
+learning_rate,n_steps,batch_size,gamma,gae_lambda,clip_range,ent_coef,epsilon,mean_reward,training_time,standard deviation
+0.01,512,128,0.999,0.95,0.2,0.01,1e-05,163.8,1.1615943908691406,52.905198232309836
+0.01,512,64,0.95,0.95,0.2,0.001,1e-06,160.4,1.7614176273345947,32.57360894957757
+learning_rate,n_steps,batch_size,gamma,gae_lambda,clip_range,ent_coef,epsilon,mean_reward,training_time,standard deviation
+0.01,512,128,0.999,0.95,0.2,0.01,1e-05,198.4,1.168776035308838,107.17947564715924
+0.01,512,64,0.95,0.95,0.2,0.001,1e-06,199.0,1.5956289768218994,111.38581597313008
+learning_rate,n_steps,batch_size,gamma,gae_lambda,clip_range,ent_coef,epsilon,mean_reward,training_time,standard deviation
+0.01,512,128,0.999,0.95,0.2,0.01,1e-05,235.8,1.7576234340667725,33.893362181996636
+0.01,512,64,0.95,0.95,0.2,0.001,1e-06,162.3,2.5471367835998535,12.884486796143648
+learning_rate,n_steps,batch_size,gamma,gae_lambda,clip_range,ent_coef,epsilon,mean_reward,training_time,standard deviation
+0.01,512,128,0.999,0.95,0.2,0.01,1e-05,183.5,3.037771463394165,20.110942295178514
+0.01,512,64,0.95,0.95,0.2,0.001,1e-06,231.5,3.9694249629974365,56.24633321381937
+learning_rate,n_steps,batch_size,gamma,gae_lambda,clip_range,ent_coef,epsilon,mean_reward,training_time,standard deviation
+0.01,512,128,0.999,0.95,0.2,0.01,1e-05,500.0,1.2020385265350342,0.0
+0.01,512,64,0.95,0.95,0.2,0.001,1e-06,334.8,1.6956334114074707,112.56180524494089
+learning_rate,n_steps,batch_size,gamma,gae_lambda,clip_range,ent_coef,epsilon,mean_reward,training_time,standard deviation

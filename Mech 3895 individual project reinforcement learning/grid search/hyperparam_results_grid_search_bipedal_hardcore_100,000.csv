@@ -1,0 +1,6 @@
+0.1,512,128,0.9,0.95,0.1,0.0,1e-05,-165.00665011676028,74.15834164619446,28.570825440588127
+0.1,512,128,0.9,0.95,0.1,0.0,1e-06,-129.4562713691965,93.06488561630249,32.644096983651835
+learning_rate,n_steps,batch_size,gamma,gae_lambda,clip_range,ent_coef,epsilon,mean_reward,training_time,standard deviation
+0.1,512,128,0.9,0.95,0.1,0.0,1e-05,-154.9237129758112,77.87484526634216,32.62905047775284
+0.1,512,128,0.9,0.95,0.1,0.0,1e-06,-177.26058261031284,86.42796397209167,0.30263185290864997
+learning_rate,n_steps,batch_size,gamma,gae_lambda,clip_range,ent_coef,epsilon,mean_reward,training_time,standard deviation
